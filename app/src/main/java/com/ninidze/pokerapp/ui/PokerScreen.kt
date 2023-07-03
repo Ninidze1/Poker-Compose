@@ -10,12 +10,13 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment.Companion.CenterHorizontally
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import com.ninidze.pokerapp.models.GameState
 import com.ninidze.pokerapp.ui.components.PokerActionArea
 import com.ninidze.pokerapp.ui.components.PokerTable
 import com.ninidze.pokerapp.ui.theme.BackgroundColor
 
 @Composable
-fun PokerScreen() {
+fun PokerScreen(gameState: GameState) {
     Column(
         modifier = Modifier
             .background(BackgroundColor)
@@ -23,10 +24,12 @@ fun PokerScreen() {
         horizontalAlignment = CenterHorizontally,
         verticalArrangement = Arrangement.Center
     ) {
-        PokerTable()
+        PokerTable(gameState)
         Spacer(modifier = Modifier.height(12.dp))
         PokerActionArea(
-            onRaiseClick = { },
+            onRaiseClick = { raisedBet ->
+               println("raisedBet: $raisedBet")
+            },
             onCallClick = { },
             onFoldClick = { }
         )

@@ -1,12 +1,11 @@
 package com.ninidze.pokerapp.ui.components
 
-import android.transition.Slide
 import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.material3.Button
@@ -22,16 +21,18 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.ninidze.pokerapp.ui.theme.PokerAppTheme
+import com.ninidze.pokerapp.utils.Constants.SMALL_BLIND
 
 @Composable
 fun PokerActionArea(
     modifier: Modifier = Modifier,
-    onRaiseClick: () -> Unit,
+    currentBid: Int = SMALL_BLIND * 2,
+    onRaiseClick: (Int) -> Unit,
     onCallClick: () -> Unit,
     onFoldClick: () -> Unit
 ) {
     var isRaiseSliderVisible by remember { mutableStateOf(false) }
-    var raiseValue by remember { mutableStateOf(0f) }
+    var raiseValue by remember { mutableStateOf((currentBid * 2f)) }
 
     Column(
         modifier = modifier.fillMaxWidth(),
@@ -40,21 +41,35 @@ fun PokerActionArea(
         Row {
             Button(onClick = {
                 isRaiseSliderVisible = !isRaiseSliderVisible
-                onRaiseClick.invoke()
+                if (!isRaiseSliderVisible) {
+                    onRaiseClick.invoke(raiseValue.toInt())
+                }
             }) {
-                Text(text = "Raise")
+                Column(horizontalAlignment = CenterHorizontally) {
+                    Text(text = "$${raiseValue.toInt()}")
+                    Text(text = "Raise")
+                }
             }
             Spacer(modifier = Modifier.width(8.dp))
             Button(onClick = {
+                isRaiseSliderVisible = false
                 onCallClick.invoke()
             }) {
-                Text(text = "Call")
+                Column(horizontalAlignment = CenterHorizontally) {
+                    Text(text = "$$currentBid")
+                    Text(text = "Call")
+                }
             }
             Spacer(modifier = Modifier.width(8.dp))
-            Button(onClick = {
-                onFoldClick.invoke()
-            }) {
-                Text(text = "Fold")
+            Button(
+                onClick = {
+                    isRaiseSliderVisible = false
+                    onFoldClick.invoke()
+                }) {
+                Column(horizontalAlignment = CenterHorizontally) {
+                    Text(text = "$$currentBid")
+                    Text(text = "Fold")
+                }
             }
 
         }
@@ -64,8 +79,10 @@ fun PokerActionArea(
                 modifier = Modifier
                     .padding(horizontal = 36.dp)
                     .fillMaxWidth(),
+                valueRange = 0f..1000f,
                 value = raiseValue,
                 onValueChange = {
+                    if (it < (currentBid * 2f)) return@Slider
                     raiseValue = it
                 }
             )

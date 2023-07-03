@@ -1,6 +1,6 @@
 package com.ninidze.pokerapp.models
 
-data class PlayingCard(
+data class Card(
     val type: CardType,
     val value: CardValue
 ) {
