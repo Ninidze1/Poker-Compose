@@ -41,7 +41,7 @@ fun PlayerUI(
                 modifier = Modifier
                     .size(CARD_SIZE.dp)
                     .graphicsLayer {
-                        if (playerIndex % 2 == 0) {
+                        if (playerIndex == 1 || playerIndex == 2) {
                             scaleX = -1f
                         }
                     }
@@ -57,6 +57,11 @@ fun PlayerUI(
                     .clip(RoundedCornerShape(10.dp)),
                 painter = ColorPainter(Color.Blue),
                 contentDescription = "Player Avatar"
+            )
+            Text(
+                modifier = Modifier.size(CARD_SIZE.dp),
+                text = "Player $playerIndex",
+                color = Color.White,
             )
         }
         Spacer(modifier = Modifier.height(8.dp))

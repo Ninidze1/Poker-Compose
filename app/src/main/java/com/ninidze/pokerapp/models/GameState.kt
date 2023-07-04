@@ -34,7 +34,7 @@ data class GameState(
 data class Player(
     val name: String,
     val chips: Int,
-    val cards: List<Card>,
+    val cards: List<Card>?,
     val bet: Int,
     val isFolded: Boolean,
     val isAllIn: Boolean
